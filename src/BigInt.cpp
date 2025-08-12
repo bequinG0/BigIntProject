@@ -1,121 +1,44 @@
-#include <iostream>
-#include <cstdlib>
-#include <string>
-#include <algorithm>
-#include <vector>
-#include <unistd.h>
+#include <../include/BigInt/BigInt.h>
 
-using namespace std;
-
-class Big_Data
+BigInt BigInt::operator++()
 {
-private:
-    vector <int> man;
-    bool _is_negative=false;
-public:
-    Big_Data(){}
-
-    Big_Data(long long val) {
-        *this = Big_Data(to_string(val));
-    }
-
-    Big_Data(string data)
-    {
-        int c=0;
-        if(data[0]=='-') { c++; _is_negative=true; }
-        for(int i=c; i<data.size(); i++)
-        {
-            man.push_back(data[i]-'0');
-        }
-    }
-
-    Big_Data(vector <int> data)
-    {
-        for(int i=0; i<data.size(); i++)
-        {
-            man.push_back(data[i]);
-        }
-    }
-
-    Big_Data& operator= (const Big_Data &val2)
-    {
-        while(man.size()!=0)
-        {
-            man.pop_back();
-        }
-        for(int i=0; i<val2.man.size(); i++)
-        {
-            man.push_back(val2.man[i]);
-        }
-        _is_negative=val2._is_negative;
-        return *this;
-    }//*/
-
-    friend vector <int> input(Big_Data &val1){return val1.man;}
-
-    friend Big_Data operator+(const Big_Data &val1, const Big_Data &val2);
-    friend Big_Data operator*(const Big_Data &val1, const Big_Data &val2);
-    friend Big_Data operator-(const Big_Data &val1, const Big_Data &val2);
-    friend Big_Data operator/(const Big_Data &val1, const Big_Data &val2);
-
-    friend Big_Data operator+=(Big_Data &val1, const Big_Data &val2);
-    friend Big_Data operator-=(Big_Data &val1, const Big_Data &val2);
-    friend Big_Data operator*=(Big_Data &val1, const Big_Data &val2);
-    friend Big_Data operator/=(Big_Data &val1, const Big_Data &val2);
-
-    Big_Data operator++(); Big_Data operator++(int);
-    Big_Data operator--(); Big_Data operator--(int);
-
-    friend bool operator>(const Big_Data &val1, const Big_Data &val2);
-    friend bool operator<(const Big_Data &val1, const Big_Data &val2);
-    friend bool operator==(const Big_Data &val1, const Big_Data &val2);
-    friend bool operator>=(const Big_Data &val1, const Big_Data &val2);
-    friend bool operator<=(const Big_Data &val1, const Big_Data &val2);
-    friend bool operator!=(const Big_Data &val1, const  Big_Data &val2);
-
-    friend ostream& operator<<(ostream &out, Big_Data val1);
-    friend istream& operator>>(istream &in, Big_Data& val1);
-};
-
-Big_Data Big_Data::operator++()
-{
-    *this += Big_Data(1);
+    *this += BigInt(1);
     return *this;
 }
 
-Big_Data Big_Data::operator--()
+BigInt BigInt::operator--()
 {
-    *this -= Big_Data(1);
+    *this -= BigInt(1);
     return *this;
 }
 
-Big_Data Big_Data::operator++(int)
+BigInt BigInt::operator++(int)
 {
-    Big_Data temp(man);
+    BigInt temp(man);
     ++(*this);
     return temp;
 }
 
-Big_Data Big_Data::operator--(int)
+BigInt BigInt::operator--(int)
 {
-    Big_Data temp(man);
+    BigInt temp(man);
     --(*this);
     return temp;
 }
 
-Big_Data operator+(const Big_Data &val1, const Big_Data &val2)
+BigInt operator+(const BigInt &val1, const BigInt &val2)
 {
-    Big_Data summ; int len;
+    BigInt summ; int len;
     vector <int> value_1, value_2;
     if(val1._is_negative and !val2._is_negative) 
     {
-        Big_Data tmp=val1;
+        BigInt tmp=val1;
         tmp._is_negative=false;
         return val2-tmp;
     }
     else if(!val1._is_negative and val2._is_negative) 
     {
-        Big_Data tmp=val2;
+        BigInt tmp=val2;
         tmp._is_negative=false;
         return val1-tmp;
     }
@@ -158,17 +81,17 @@ Big_Data operator+(const Big_Data &val1, const Big_Data &val2)
     return summ;
 }
 
-Big_Data operator*(const Big_Data &val1, const Big_Data &val2)
+BigInt operator*(const BigInt &val1, const BigInt &val2)
 {
     vector <int> value_1, value_2;
     for(int i=0; i<val1.man.size(); i++) value_1.push_back(val1.man[i]);
     for(int i=0; i<val2.man.size(); i++) value_2.push_back(val2.man[i]);
     if(value_1[0]==0 or value_2[0]==0)
     {
-        Big_Data null("0");
+        BigInt null("0");
         return null;
     }
-    Big_Data sum; int len, siz;
+    BigInt sum; int len, siz;
     if(val1._is_negative and val2._is_negative) sum._is_negative=false;
     else if(val1._is_negative or val2._is_negative) sum._is_negative=true;
     if(value_1.size()>value_2.size())
@@ -277,26 +200,26 @@ Big_Data operator*(const Big_Data &val1, const Big_Data &val2)
     return sum;
 }//*/
 
-Big_Data operator-(const Big_Data &val1, const Big_Data&val2)
+BigInt operator-(const BigInt &val1, const BigInt &val2)
 {
     if(val1==val2) return 0;
-    Big_Data res;
+    BigInt res;
     int len, siz=0; vector <int> value_1, value_2;
     if(val1._is_negative and val2._is_negative)
     {
-        Big_Data tmp=val2;
+        BigInt tmp=val2;
         tmp._is_negative=false;
         return tmp+val1;
     }
     else if(!val1._is_negative and val2._is_negative) 
     {
-        Big_Data tmp=val2;
+        BigInt tmp=val2;
         tmp._is_negative=false;
         return val1+tmp;
     }
     else if(val1._is_negative and !val2._is_negative) 
     {
-        Big_Data tmp=val2;
+        BigInt tmp=val2;
         tmp._is_negative=true;
         return val1+tmp;
     }
@@ -362,17 +285,17 @@ Big_Data operator-(const Big_Data &val1, const Big_Data&val2)
     return res;
 }//*/
 
-Big_Data big_pow(int n, int step)
+BigInt big_pow(int n, int step)
 {
-    Big_Data res=1;
+    BigInt res=1;
     while(step-->0) res=res*n;
     return res;
 }
 
-Big_Data operator/(const Big_Data &val1, const Big_Data &val2)
+BigInt operator/(const BigInt &val1, const BigInt &val2)
 {
-    Big_Data tmp, tmp1;
-    int step=0; Big_Data res=0;
+    BigInt tmp, tmp1;
+    int step=0; BigInt res=0;
     if(val1._is_negative and val2._is_negative) res._is_negative=false;
     else if(val1._is_negative or val2._is_negative) res._is_negative=true;
     for(int i=0; i<val1.man.size(); i++) tmp.man.push_back(val1.man[i]);
@@ -390,31 +313,31 @@ Big_Data operator/(const Big_Data &val1, const Big_Data &val2)
     return res;
 }
 
-Big_Data operator+=(Big_Data &val1, const Big_Data &val2)
+BigInt operator+=(BigInt &val1, const BigInt &val2)
 {
     val1=val1+val2;
     return val1;
 }
 
-Big_Data operator-=(Big_Data &val1, const Big_Data &val2)
+BigInt operator-=(BigInt &val1, const BigInt &val2)
 {
     val1=val1-val2;
     return val1;
 }
 
-Big_Data operator*=(Big_Data &val1, const Big_Data &val2)
+BigInt operator*=(BigInt &val1, const BigInt &val2)
 {
     val1=val1*val2;
     return val1;
 }
 
-Big_Data operator/=(Big_Data &val1, const Big_Data &val2)
+BigInt operator/=(BigInt &val1, const BigInt &val2)
 {
     val1=val1/val2;
     return val1;
 }
 
-bool operator>(const Big_Data &val1, const Big_Data &val2)
+bool operator>(const BigInt &val1, const BigInt &val2)
 {
     if(val1.man.size()!=val2.man.size())
     {
@@ -446,7 +369,7 @@ bool operator>(const Big_Data &val1, const Big_Data &val2)
     return false;
 }
 
-bool operator<(const Big_Data &val1, const Big_Data &val2)
+bool operator<(const BigInt &val1, const BigInt &val2)
 {
     if(val1.man.size()!=val2.man.size())
     {
@@ -477,7 +400,7 @@ bool operator<(const Big_Data &val1, const Big_Data &val2)
     return false;
 }
 
-bool operator==(const Big_Data &val1, const Big_Data &val2)
+bool operator==(const BigInt &val1, const BigInt &val2)
 {
     if(val1.man.size()!=val2.man.size())
     {
@@ -497,7 +420,7 @@ bool operator==(const Big_Data &val1, const Big_Data &val2)
     }
 }
 
-bool operator!=(const Big_Data &val1, const Big_Data &val2)
+bool operator!=(const BigInt &val1, const BigInt &val2)
 {
     if(val1.man.size()!=val1.man.size())
     {
@@ -517,7 +440,7 @@ bool operator!=(const Big_Data &val1, const Big_Data &val2)
     }
 }
 
-bool operator>=(const Big_Data &val1, const Big_Data &val2)
+bool operator>=(const BigInt &val1, const BigInt &val2)
 {
     if(val1.man.size()!=val2.man.size())
     {
@@ -548,7 +471,7 @@ bool operator>=(const Big_Data &val1, const Big_Data &val2)
     return false;
 }
 
-bool operator<=(const Big_Data &val1, const Big_Data &val2)
+bool operator<=(const BigInt &val1, const BigInt &val2)
 {
     if(val1.man.size()!=val2.man.size())
     {
@@ -579,21 +502,16 @@ bool operator<=(const Big_Data &val1, const Big_Data &val2)
     return false;
 }
 
-ostream& operator<<(ostream &out, Big_Data val1)
+ostream& operator<<(ostream &out, BigInt val1)
 {
     if(val1._is_negative) cout << "-";
     for(int i=0; i<val1.man.size(); i++) out << val1.man[i];
     return out;
 }
 
-istream& operator>>(istream &in, Big_Data& val1)
+istream& operator>>(istream &in, BigInt &val1)
 {
     string s; in >> s;
-    val1 = Big_Data(s);
+    val1 = BigInt(s);
     return in;
-} 
-
-int main()
-{
-    //write something... 
 }

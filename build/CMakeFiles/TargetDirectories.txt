@@ -1,0 +1,7 @@
+/home/bequ1n/sandbox/project/BigInt/build/CMakeFiles/BigInt.dir
+/home/bequ1n/sandbox/project/BigInt/build/CMakeFiles/edit_cache.dir
+/home/bequ1n/sandbox/project/BigInt/build/CMakeFiles/rebuild_cache.dir
+/home/bequ1n/sandbox/project/BigInt/build/CMakeFiles/list_install_components.dir
+/home/bequ1n/sandbox/project/BigInt/build/CMakeFiles/install.dir
+/home/bequ1n/sandbox/project/BigInt/build/CMakeFiles/install/local.dir
+/home/bequ1n/sandbox/project/BigInt/build/CMakeFiles/install/strip.dir
