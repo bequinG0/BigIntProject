@@ -26,7 +26,7 @@ BigIntProject/
 
 ## 🚀 Сборка и установка
 ```bash
-git clone https://github.com/yourname/BigInt.git
+git clone https://github.com/bequ1nG0/BigInt.git
 cd BigInt
 cmake -S . -B build
 cmake --build build
